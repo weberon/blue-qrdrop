@@ -1,0 +1,24 @@
+{
+  "name": "blue-qrdrop",
+  "version": "1.0.0",
+  "description": "\"# blue-qrdrop\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weberon/blue-qrdrop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weberon/blue-qrdrop/issues"
+  },
+  "homepage": "https://github.com/weberon/blue-qrdrop#readme",
+  "dependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
