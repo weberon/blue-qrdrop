@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/qr-PWA/static/css/main.d23e31c6.css",
+    "main.js": "/qr-PWA/static/js/main.52cadf33.js",
+    "static/media/google-logo.png": "/qr-PWA/static/media/google-logo.4c7cb321efa903f1dc89.png",
+    "index.html": "/qr-PWA/index.html",
+    "main.d23e31c6.css.map": "/qr-PWA/static/css/main.d23e31c6.css.map",
+    "main.52cadf33.js.map": "/qr-PWA/static/js/main.52cadf33.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d23e31c6.css",
+    "static/js/main.52cadf33.js"
+  ]
+}
