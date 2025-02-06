@@ -1,64 +1,72 @@
-// \build\index.html
-// import { readFile, writeFile, readFileSync, writeFileSync } from "fs";
-// import { JSDOM } from "jsdom";
-// import { getLinkWithDomain } from "./index.js"; // Adjust path
+import { readFileSync, writeFileSync } from "fs";
+import { JSDOM } from "jsdom";
 
-// const FILE_PATH = "/build/index.html";
-// const DOMAIN = "blue-qrdrop";
+const getExistingHomePage = (source) => {
+    let first = `${source}`.split('/').filter(s => s.trim() !== '')[0];
+    console.log({first});
+    if(!isFile(first)){
+        return first;
+    }
+    return undefined;
+}
 
-// // Read the index.html file
-// readFile(FILE_PATH, "utf8", (err, data) => {
-//     if (err) {
-//         console.error("Error reading index.html:", err);
-//         return;
-//     }
+const isFile = (str) => {
+    return str.split('.').length > 1;
+}
 
-//     // Parse HTML with jsdom
-//     const dom = new JSDOM(data);
-//     const document = dom.window.document;
+const getLinkWithDomain = (link, domain) => {
+    const homePage = getExistingHomePage(link);
+    let link2 = `/${domain}/${link}`;
+    if(homePage != null){
+        link2 = link.replace(homePage, domain);
+    }
+    const links = link2.split('/').filter(l => l != "");
+    const links3 = links.join('/');    
+    return links.length > 0 ? `/${links3}`: links3;
+}
 
-//     // Update <link> tags (e.g., stylesheets, manifest, icons)
-//     document.querySelectorAll("link[href]").forEach((link) => {
-//         link.href = getLinkWithDomain(link.href, DOMAIN);
-//     });
+//module.exports.getLinkWithDomain = getLinkWithDomain;
 
-//     // Update <script> tags
-//     document.querySelectorAll("script[src]").forEach((script) => {
-//         script.src = getLinkWithDomain(script.src, DOMAIN);
-//     });
 
-//     // Write the modified HTML back to file
-//     writeFile(FILE_PATH, dom.serialize(), "utf8", (err) => {
-//         if (err) {
-//             console.error("Error writing index.html:", err);
-//         } else {
-//             console.log("index.html successfully updated.");
-//         }
-//     });
-// });
+const FILE_PATH = "./build/index.html"; // Ensure the path is correct
+const DOMAIN = "blue-qrdrop";
 
 const updateUrls = () => {
-  const htmlContent = readFileSync(FILE_PATH);
-  const dom = new JSDOM(data);
-  const document = dom.window.document;
-  // Update <link> tags (e.g., stylesheets, manifest, icons)
+    try {
+        // Read the index.html file
+        const htmlContent = readFileSync(FILE_PATH, "utf8");
+        
+        // Parse HTML with jsdom
+        const dom = new JSDOM(htmlContent);
+        const document = dom.window.document;
 
-  // Update <script> tags
+        // Update <link> tags (e.g., stylesheets, manifest, icons)
+        document.querySelectorAll("link[href]").forEach((link) => {
+            link.href = getLinkWithDomain(link.href, DOMAIN);
+        });
 
-  writeFileSync(FILE_PATH, dom.serialize(), "utf8");
-  console.log(FILE_PATH, "successfully updated"); 
-  
-}
+        // Update <script> tags
+        document.querySelectorAll("script[src]").forEach((script) => {
+            script.src = getLinkWithDomain(script.src, DOMAIN);
+        });
 
-const init = async() => {
-  try{
-    updateUrls();
-  }catch(err){
-    console.log("[ERROR]", err);
-    console.log(error);
-    process.exit(1);
-  }
-}
+        // Write the modified HTML back to file
+        writeFileSync(FILE_PATH, dom.serialize(), "utf8");
+        console.log(`${FILE_PATH} successfully updated.`);
+    } catch (error) {
+        console.error("Error updating index.html:", error);
+        process.exit(1);
+    }
+};
 
-//init();
-console.log("preprocessor")
+const init = async () => {
+    try {
+        updateUrls();
+    } catch (error) {
+        console.error("[ERROR]", error);
+        process.exit(1);
+    }
+};
+
+// Uncomment this to run the script automatically
+init();
