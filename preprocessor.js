@@ -1,5 +1,5 @@
 // \build\index.html
-// import { readFile, writeFile } from "fs";
+// import { readFile, writeFile, readFileSync, writeFileSync } from "fs";
 // import { JSDOM } from "jsdom";
 // import { getLinkWithDomain } from "./index.js"; // Adjust path
 
@@ -37,4 +37,28 @@
 //     });
 // });
 
+const updateUrls = () => {
+  const htmlContent = readFileSync(FILE_PATH);
+  const dom = new JSDOM(data);
+  const document = dom.window.document;
+  // Update <link> tags (e.g., stylesheets, manifest, icons)
+
+  // Update <script> tags
+
+  writeFileSync(FILE_PATH, dom.serialize(), "utf8");
+  console.log(FILE_PATH, "successfully updated"); 
+  
+}
+
+const init = async() => {
+  try{
+    updateUrls();
+  }catch(err){
+    console.log("[ERROR]", err);
+    console.log(error);
+    process.exit(1);
+  }
+}
+
+//init();
 console.log("preprocessor")
