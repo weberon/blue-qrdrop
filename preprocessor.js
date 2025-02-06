@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 
 const getExistingHomePage = (source) => {
     let first = `${source}`.split('/').filter(s => s.trim() !== '')[0];
-    if (!isFile(first)) {
+    if (!isFile(first) || first !== 'static') {
         return first;
     }
     return undefined;
@@ -46,12 +46,12 @@ const updateUrls = () => {
 
         // Update <link> tags (stylesheets, manifest, icons)
         document.querySelectorAll("link[href]").forEach((link) => {
-            link.href = getStaticPath(link.href, DOMAIN);
+            link.href = getLinkWithDomain(link.href, DOMAIN);
         });
 
         // Update <script> tags
         document.querySelectorAll("script[src]").forEach((script) => {
-            script.src = getStaticPath(script.src, DOMAIN);
+            script.src = getLinkWithDomain(script.src, DOMAIN);
         });
 
         // Write the modified HTML back to file
