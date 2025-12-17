@@ -1,5 +1,6 @@
 const CACHE_NAME = 'my-pwa-v1.1.2'; // Update this for new versions
 
+// Install event - caching assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -16,7 +17,13 @@ self.addEventListener('install', (event) => {
 
 // Listen for SKIP_WAITING message
 self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+  // Only accept messages from the same origin
+  if (
+    event.source &&
+    event.origin === self.origin &&
+    event.data &&
+    event.data.type === "SKIP_WAITING"
+  ) {
     self.skipWaiting(); // Activate the new Service Worker
   }
 });
